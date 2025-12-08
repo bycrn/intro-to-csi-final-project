@@ -144,7 +144,7 @@ export default {
         const formData = new FormData()
         formData.append('file', this.selectedFile)
         
-        const response = await axios.post('http://localhost:8000/classify', formData, {
+        const response = await axios.post('/api/classify', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }

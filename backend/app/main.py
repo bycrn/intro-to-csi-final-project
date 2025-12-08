@@ -18,9 +18,13 @@ app = FastAPI(
 )
 
 # CORS middleware to allow requests from frontend
+# Configure allowed origins via environment variable
+import os
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify exact origins
+    allow_origins=allowed_origins,  # Configure via ALLOWED_ORIGINS env var
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

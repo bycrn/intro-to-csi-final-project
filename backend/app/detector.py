@@ -10,15 +10,17 @@ import os
 class WasteDetector:
     """Waste item detector using YOLOv8"""
     
-    def __init__(self, model_path: str = None):
+    def __init__(self, model_path: str = None, confidence_threshold: float = 0.3):
         """
         Initialize the detector
         
         Args:
             model_path: Path to custom YOLOv8 model. If None, uses pretrained YOLOv8n
+            confidence_threshold: Minimum confidence score for detections (default: 0.3)
         """
         self.model = None
         self.model_path = model_path or "yolov8n.pt"  # Default to YOLOv8 nano
+        self.confidence_threshold = confidence_threshold
         self._load_model()
         
         # Mapping from COCO classes to waste categories
@@ -162,8 +164,8 @@ class WasteDetector:
                     confidence = float(box.conf[0])
                     class_name = result.names[class_id]
                     
-                    # Only include detections with confidence > 0.3
-                    if confidence > 0.3:
+                    # Only include detections above confidence threshold
+                    if confidence > self.confidence_threshold:
                         category = self._get_waste_category(class_name)
                         detections.append({
                             "object": class_name,

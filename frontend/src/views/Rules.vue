@@ -130,7 +130,7 @@ export default {
   methods: {
     async fetchCategories() {
       try {
-        const response = await axios.get('http://localhost:8000/categories')
+        const response = await axios.get('/api/categories')
         this.categories = response.data.categories
         this.generalRules = response.data.rules.general_rules
         this.loading = false
