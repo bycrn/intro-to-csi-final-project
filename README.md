@@ -1,6 +1,12 @@
 # 桃園垃圾分類助手 | Taoyuan Waste Sorting Helper
 
+[![Security: Patched](https://img.shields.io/badge/security-patched-green.svg)](SECURITY.md)
+[![Version: 1.0.1](https://img.shields.io/badge/version-1.0.1-blue.svg)](CHANGELOG.md)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 A mobile-friendly web application to help foreigners understand waste sorting categories in Taoyuan, Taiwan. The app uses AI-powered object detection to classify waste items into appropriate categories: recyclables, kitchen waste, and general waste.
+
+> **🔒 Security Notice**: Version 1.0.1 includes critical security updates. All previously identified vulnerabilities have been patched. See [SECURITY.md](SECURITY.md) for details.
 
 ## 🎯 Features
 

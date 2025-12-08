@@ -5,6 +5,27 @@ All notable changes to the Taoyuan Waste Sorting Helper project will be document
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2024-12-08
+
+### Security
+- 🔒 **CRITICAL**: Updated all dependencies with known vulnerabilities
+- Updated fastapi: 0.104.1 → 0.115.5 (fixes ReDoS vulnerability)
+- Updated python-multipart: 0.0.6 → 0.0.18 (fixes DoS and ReDoS vulnerabilities)
+- Updated pillow: 10.1.0 → 11.0.0 (fixes buffer overflow vulnerability)
+- Updated torch: 2.1.1 → 2.6.0 (fixes heap buffer overflow, use-after-free, and RCE vulnerabilities)
+- Updated torchvision: 0.16.1 → 0.21.0 (compatibility update)
+- Updated uvicorn: 0.24.0 → 0.32.1 (security and stability improvements)
+- Updated ultralytics: 8.0.220 → 8.3.41 (compatibility with torch 2.6.0)
+- Updated numpy: 1.26.2 → 2.2.0 (compatibility update)
+- Updated opencv-python: 4.8.1.78 → 4.10.0.84 (stability improvements)
+- Updated python-dotenv: 1.0.0 → 1.0.1 (bug fixes)
+- Updated firebase-admin: 6.3.0 → 6.6.0 (security improvements)
+
+### Verified
+- ✅ All dependencies now vulnerability-free (checked via GitHub Advisory Database)
+- ✅ Python syntax verification passed
+- ✅ Code compatibility maintained
+
 ## [1.0.0] - 2024-12-08
 
 ### Added
