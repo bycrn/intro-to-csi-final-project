@@ -1,11 +1,18 @@
 {
+  "app_links": {
+    "title": "垃圾車追蹤App / Garbage Truck Tracking App",
+    "description": "下載官方App追蹤垃圾車即時位置 / Download official app to track real-time garbage truck locations",
+    "google_play": "https://play.google.com/store/apps/details?id=com.iisi.lagi2",
+    "app_store": "https://apps.apple.com/tw/app/樂圾通/id778265756"
+  },
   "general_rules": [
     "🗓️ 垃圾車每週一至週六收集 (週三、週日除外) / Garbage trucks collect Monday-Saturday (except Wednesday, Sunday)",
     "🎵 聽到《給愛麗絲》音樂時請將垃圾拿到垃圾車 / Bring waste when you hear 'Für Elise'",
     "💧 所有回收物品必須清洗乾淨並瀝乾 / All recyclables must be cleaned and dried",
     "🛍️ 一般垃圾需使用桃園市專用垃圾袋 / General waste requires Taoyuan designated bags",
     "♻️ 回收物品不需要垃圾袋，直接交給回收車 / Recyclables don't need bags, hand directly to recycling truck",
-    "🍲 廚餘需裝入塑膠袋或容器，倒入廚餘桶 / Kitchen waste in plastic bags or containers, pour into collection bucket"
+    "🍲 廚餘需裝入塑膠袋或容器，倒入廚餘桶 / Kitchen waste in plastic bags or containers, pour into collection bucket",
+    "📱 使用「桃園垃圾車」App追蹤垃圾車位置和時間 / Use 'Taoyuan Garbage Truck' app to track truck locations and schedules"
   ],
   "categories": [
     {

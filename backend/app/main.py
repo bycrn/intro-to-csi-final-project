@@ -1,11 +1,17 @@
 from typing import Union
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 import json
 import os
 from pathlib import Path
+from PIL import Image
+import io
+from .detector import WasteDetector
 
 app = FastAPI()
+
+# Initialize the waste detector
+detector = WasteDetector()
 
 # Add CORS middleware to allow frontend requests
 app.add_middleware(
@@ -18,7 +24,50 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return {
+        "message": "Taoyuan Waste AI API",
+        "status": "running",
+        "detector_loaded": detector.is_loaded()
+    }
+
+@app.post("/api/classify")
+async def classify_waste(file: UploadFile = File(...)):
+    """
+    Classify waste item from uploaded image
+    """
+    try:
+        # Check if detector is loaded
+        if not detector.is_loaded():
+            raise HTTPException(
+                status_code=503, 
+                detail="AI model not available"
+            )
+        
+        # Validate file type
+        if not file.content_type or not file.content_type.startswith('image/'):
+            raise HTTPException(
+                status_code=400, 
+                detail="Please upload an image file"
+            )
+        
+        # Read and process image
+        image_bytes = await file.read()
+        image = Image.open(io.BytesIO(image_bytes))
+        
+        # Convert to RGB if necessary
+        if image.mode != 'RGB':
+            image = image.convert('RGB')
+        
+        # Run detection
+        result = detector.detect(image)
+        
+        return result
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Classification failed: {str(e)}"
+        )
 
 @app.get("/api/categories")
 def get_categories():

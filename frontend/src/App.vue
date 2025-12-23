@@ -2,7 +2,7 @@
   <div id="app">
     <header class="app-header">
       <div class="container">
-        <h1 class="logo">♻️ 桃園垃圾分類</h1>
+        <h1 class="logo">♻️ Waste Sorting Helper</h1>
         <nav>
           <router-link to="/" class="nav-link">分類助手</router-link>
           <router-link to="/rules" class="nav-link">分類規則</router-link>
@@ -15,7 +15,7 @@
     </main>
     
     <footer class="app-footer">
-      <p>桃園市垃圾分類助手 | Taoyuan Waste Sorting Helper</p>
+      <p>Taoyuan Waste Sorting Helper</p>
       <p class="small">幫助外國人了解台灣桃園的垃圾分類規則</p>
     </footer>
   </div>
