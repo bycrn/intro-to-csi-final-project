@@ -30,5 +30,5 @@ ENV QT_QPA_PLATFORM=offscreen
 
 EXPOSE 8000
 
-# Use production ASGI server - single worker for memory efficiency
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]
+# Use production ASGI server - Railway will set PORT automatically
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 1"]

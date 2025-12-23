@@ -8,6 +8,10 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+
+# Environment variables (include .env.development and .env.production)
+.env.local
+.env.*.local
 .DS_Store
 dist
 dist-ssr
