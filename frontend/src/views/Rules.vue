@@ -131,10 +131,22 @@ export default {
   methods: {
     async fetchCategories() {
       try {
-        const response = await axios.get('http://localhost:8000/api/categories')
+        this.loading = true
+        this.error = null
+        
+        console.log('🔄 Fetching categories from backend...')
+        
+        // Fixed endpoint - matches your backend structure
+        const response = await axios.get('http://localhost:8000/rules')
+        
+        // Extract data from your taoyuan_rules.json structure
         this.categories = response.data.categories
-        this.generalRules = response.data.rules.general_rules
+        this.generalRules = response.data.general_rules || []
+        
+        console.log('✅ Loaded:', this.categories.length, 'categories')
+        
       } catch (err) {
+        console.error('❌ Fetch error:', err)
         this.error = '無法載入規則 / Cannot load rules'
       } finally {
         this.loading = false
@@ -143,6 +155,7 @@ export default {
   }
 }
 </script>
+
 
 <!-- Style  -->
 
