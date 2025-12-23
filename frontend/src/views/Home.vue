@@ -145,7 +145,7 @@ export default {
         formData.append('file', this.selectedFile)
 
         const response = await axios.post(
-          'http://localhost:8000/api/classify',
+          `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/classify`,
           formData,
           { headers: { 'Content-Type': 'multipart/form-data' } }
         )

@@ -137,7 +137,7 @@ export default {
         console.log('🔄 Fetching categories from backend...')
         
         // Fixed endpoint - matches your backend structure
-        const response = await axios.get('http://localhost:8000/rules')
+        const response = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/rules`)
         
         // Extract data from your taoyuan_rules.json structure
         this.categories = response.data.categories
