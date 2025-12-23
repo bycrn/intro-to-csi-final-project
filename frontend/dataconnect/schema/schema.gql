@@ -1,0 +1,40 @@
+type User @table {
+  displayName: String!
+  createdAt: Timestamp!
+  email: String
+  photoUrl: String
+  location: String
+}
+
+type WasteCategory @table {
+  name: String!
+  createdAt: Timestamp!
+  description: String
+  disposalInstructions: String
+}
+
+type Item @table {
+  name: String!
+  createdAt: Timestamp!
+  wasteCategory: WasteCategory
+  imageUrl: String
+  commonMaterials: String
+}
+
+type DisposalMethod @table {
+  name: String!
+  description: String!
+  iconUrl: String
+  isRecyclable: Boolean
+  requiresSpecialHandling: Boolean
+}
+
+type Scan @table {
+  scanDate: Timestamp!
+  imageUrl: String!
+  user: User
+  item: Item
+  identifiedWasteCategory: WasteCategory
+  confidenceScore: Float
+  userConfirmation: Boolean
+}

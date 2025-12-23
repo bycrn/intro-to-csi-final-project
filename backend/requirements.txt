@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+pillow
+ultralytics
+torch
+torchvision
+numpy
+opencv-python
+python-dotenv
+firebase-admin
+python-multipart==0.0.6

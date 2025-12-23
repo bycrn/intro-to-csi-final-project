@@ -1,0 +1,45 @@
+mutation CreateUser @auth(level: USER) {
+  user_insert(data: {
+    id_expr: "uuidV4()",
+    createdAt_expr: "request.time",
+    displayName: "New User",
+    email: "newuser@example.com",
+    location: "Some Location",
+    photoUrl: "http://example.com/photo.jpg"
+  })
+}
+
+query ListWasteCategories @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public") {
+  wasteCategories {
+    id
+    name
+    description
+  }
+}
+
+mutation AddScan($itemId: UUID!, $identifiedWasteCategoryId: UUID!, $confidenceScore: Float!, $imageUrl: String!, $scanDate: Timestamp!, $userConfirmation: Boolean!) @auth(level: USER) {
+  scan_insert(data: {
+    itemId: $itemId,
+    identifiedWasteCategoryId: $identifiedWasteCategoryId,
+    confidenceScore: $confidenceScore,
+    imageUrl: $imageUrl,
+    scanDate: $scanDate,
+    userConfirmation: $userConfirmation,
+    userId_expr: "auth.uid"
+  })
+}
+
+query GetUserScans @auth(level: USER) {
+  scans(where: {userId: {eq_expr: "auth.uid"}}) {
+    id
+    itemId
+    identifiedWasteCategory {
+      id
+      name
+    }
+    confidenceScore
+    imageUrl
+    scanDate
+    userConfirmation
+  }
+}

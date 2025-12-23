@@ -1,0 +1,23 @@
+services:
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app
+      - ENVIRONMENT=production
+    volumes:
+      - ./backend:/app
+    restart: unless-stopped
+    networks:
+      - taoyuan-network
+
+networks:
+  taoyuan-network:
+    driver: bridge
+
+volumes:
+  backend_data:
+    driver: local
