@@ -3,17 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
 import io
 from .detector import WasteDetector
-from .firebase_config import get_waste_categories, get_general_rules, seed_taoyuan_rules
-
 app = FastAPI()
 
-# Initialize Firebase rules once on startup
-@app.on_event("startup")
-async def startup_event():
-    try:
-        seed_taoyuan_rules()
-    except Exception as e:
-        print(f"⚠️  Firebase seed skipped (already seeded): {e}")
+# Ini
 
 # Initialize the waste detector
 detector = WasteDetector()
