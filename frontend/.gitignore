@@ -8,15 +8,14 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-
-# Environment variables (include .env.development and .env.production)
-.env.local
-.env.*.local
 .DS_Store
 dist
 dist-ssr
 coverage
 *.local
+
+/cypress/videos/
+/cypress/screenshots/
 
 # Editor directories and files
 .vscode/*
@@ -31,10 +30,6 @@ coverage
 *.tsbuildinfo
 
 .eslintcache
-
-# Cypress
-/cypress/videos/
-/cypress/screenshots/
 
 # Vitest
 __screenshots__/

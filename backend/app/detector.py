@@ -34,6 +34,7 @@ class WasteDetector:
             "pizza": "kitchen_waste",
             "donut": "kitchen_waste",
             "cake": "kitchen_waste",
+            "bubble tea": "kitchen_waste",
             
             # Recyclables
             "bottle": "recyclable",
@@ -82,7 +83,7 @@ class WasteDetector:
             return "recyclable"
         
         # Food items
-        food_keywords = ["banana", "apple", "sandwich", "orange", "pizza", "cake", "donut", "broccoli", "carrot"]
+        food_keywords = ["banana", "apple", "sandwich", "orange", "pizza", "cake", "donut", "broccoli", "carrot", "bubble tea"]
         if any(word in class_lower for word in food_keywords):
             return "kitchen_waste"
         

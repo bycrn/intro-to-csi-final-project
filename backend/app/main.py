@@ -1,18 +1,15 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException
+from typing import Union
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from PIL import Image
-import io
-from .detector import WasteDetector
+import json
+import os
+
 app = FastAPI()
 
-# Ini
-
-# Initialize the waste detector
-detector = WasteDetector()
-
+# Add CORS middleware to allow frontend requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=["*"],  # In production, replace with your frontend domain
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -20,61 +17,39 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-    return {
-        "message": "Taoyuan Waste AI API",
-        "status": "running",
-        "detector_loaded": detector.is_loaded()
-    }
+    return {"Hello": "World"}
 
-@app.post("/api/classify")
-async def classify_waste(file: UploadFile = File(...)):
-    """Classify waste using YOLOv8 detection"""
+@app.get("/rules")
+def get_rules():
+    """
+    Endpoint to serve Taoyuan waste sorting rules
+    Returns the content of taoyuan_rules.json
+    """
     try:
-        if not file.content_type.startswith('image/'):
-            raise HTTPException(status_code=400, detail="File must be an image")
+        # Check if file exists
+        if not os.path.exists("taoyuan_rules.json"):
+            raise HTTPException(
+                status_code=404, 
+                detail="Rules file not found. Please ensure taoyuan_rules.json is in the same directory."
+            )
         
-        image_data = await file.read()
-        image = Image.open(io.BytesIO(image_data))
+        # Load and return the JSON file
+        with open("taoyuan_rules.json", "r", encoding="utf-8") as f:
+            rules = json.load(f)
         
-        if image.mode != 'RGB':
-            image = image.convert('RGB')
-        
-        result = detector.detect(image)
-        return result
-        
-    except HTTPException:
-        raise
+        return rules
+    
+    except json.JSONDecodeError as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Invalid JSON format in rules file: {str(e)}"
+        )
     except Exception as e:
-        print(f"Classification error: {str(e)}")
-        return {
-            "success": False,
-            "error": str(e),
-            "category": {
-                "id": "general_waste",
-                "name": "一般垃圾",
-                "name_en": "General Waste",
-                "color": "#757575",
-                "instructions": "請投入一般垃圾袋",
-                "instructions_en": "Please put in general waste bag"
-            },
-            "confidence": 0.0,
-            "message": f"分類失敗 (Classification failed: {str(e)})"
-        }
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error loading rules: {str(e)}"
+        )
 
-@app.get("/api/categories")
-async def get_categories():
-    """Get waste categories from Firestore"""
-    try:
-        categories = get_waste_categories()
-        rules = get_general_rules()
-        return {
-            "success": True,
-            "categories": categories,
-            "general_rules": rules,
-            "detector_status": detector.is_loaded()
-        }
-    except Exception as e:
-        return {
-            "success": False,
-            "error": str(e)
-        }
+@app.get("/items/{item_id}")
+def read_item(item_id: int, q: Union[str, None] = None):
+    return {"item_id": item_id, "q": q}

@@ -131,7 +131,7 @@ export default {
   methods: {
     async fetchCategories() {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/categories`)
+        const response = await axios.get('http://localhost:8000/api/categories')
         this.categories = response.data.categories
         this.generalRules = response.data.rules.general_rules
       } catch (err) {
