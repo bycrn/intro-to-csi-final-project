@@ -1,11 +1,20 @@
+import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   plugins: [vue()],
-  base: '/',  // ← CRUCIAL pour Render/GitHub Pages
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url))
+    },
+  },
+  base: '/intro-to-csi-final-project/',
   build: {
-    outDir: 'dist',  // ← Génère dist/
-    emptyOutDir: true
+    outDir: '../dist'
+  },
+  server: {
+    port: 5173,
+    host: true
   }
 })
