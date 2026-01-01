@@ -1,11 +1,13 @@
 from typing import Union
+
 from fastapi import FastAPI, HTTPException, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+
 import json
-import os
 from pathlib import Path
 from PIL import Image
 import io
+
 from .detector import WasteDetector
 
 app = FastAPI()
@@ -13,11 +15,18 @@ app = FastAPI()
 # Initialize the waste detector
 detector = WasteDetector()
 
-# Add CORS middleware to allow frontend requests
+# ✅ CORS (Production-safe)
+# Add your deployed frontend(s) here:
+FRONTEND_ORIGINS = [
+    "https://wastesorting-nk7y.onrender.com",
+    # If you have other domains (Netlify/Vercel custom domain), add them too:
+    # "https://your-frontend-domain.com",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, replace with your frontend domain
-    allow_credentials=True,
+    allow_origins=FRONTEND_ORIGINS,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -38,36 +47,26 @@ async def classify_waste(file: UploadFile = File(...)):
     try:
         # Check if detector is loaded
         if not detector.is_loaded():
-            raise HTTPException(
-                status_code=503, 
-                detail="AI model not available"
-            )
-        
+            raise HTTPException(status_code=503, detail="AI model not available")
+
         # Validate file type
-        if not file.content_type or not file.content_type.startswith('image/'):
-            raise HTTPException(
-                status_code=400, 
-                detail="Please upload an image file"
-            )
-        
+        if not file.content_type or not file.content_type.startswith("image/"):
+            raise HTTPException(status_code=400, detail="Please upload an image file")
+
         # Read and process image
         image_bytes = await file.read()
         image = Image.open(io.BytesIO(image_bytes))
-        
+
         # Convert to RGB if necessary
-        if image.mode != 'RGB':
-            image = image.convert('RGB')
-        
+        if image.mode != "RGB":
+            image = image.convert("RGB")
+
         # Run detection
         result = detector.detect(image)
-        
         return result
-        
+
     except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Classification failed: {str(e)}"
-        )
+        raise HTTPException(status_code=500, detail=f"Classification failed: {str(e)}")
 
 @app.get("/api/categories")
 def get_categories():
@@ -77,28 +76,18 @@ def get_categories():
     """
     try:
         rules_path = Path(__file__).parent / "taoyuan_rules.json"
-        
         if not rules_path.exists():
-            raise HTTPException(
-                status_code=404,
-                detail=f"Rules file not found at: {rules_path}"
-            )
-        
+            raise HTTPException(status_code=404, detail=f"Rules file not found at: {rules_path}")
+
         with open(rules_path, "r", encoding="utf-8") as f:
             rules = json.load(f)
-        
+
         return rules.get("categories", [])
-        
+
     except json.JSONDecodeError as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Invalid JSON format in rules file: {str(e)}"
-        )
+        raise HTTPException(status_code=500, detail=f"Invalid JSON format in rules file: {str(e)}")
     except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Error loading categories: {str(e)}"
-        )
+        raise HTTPException(status_code=500, detail=f"Error loading categories: {str(e)}")
 
 @app.get("/rules")
 def get_rules():
@@ -107,34 +96,19 @@ def get_rules():
     Returns the content of taoyuan_rules.json
     """
     try:
-        # FIXED: Use absolute path relative to main.py location
         rules_path = Path(__file__).parent / "taoyuan_rules.json"
-        
-        print(f"Looking for rules at: {rules_path}")  # Debug log
-        
         if not rules_path.exists():
-            raise HTTPException(
-                status_code=404,
-                detail=f"Rules file not found at: {rules_path}"
-            )
-        
-        # Load and return the JSON file
+            raise HTTPException(status_code=404, detail=f"Rules file not found at: {rules_path}")
+
         with open(rules_path, "r", encoding="utf-8") as f:
             rules = json.load(f)
-        
-        print("Rules loaded successfully!")  # Debug log
+
         return rules
-        
+
     except json.JSONDecodeError as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Invalid JSON format in rules file: {str(e)}"
-        )
+        raise HTTPException(status_code=500, detail=f"Invalid JSON format in rules file: {str(e)}")
     except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Error loading rules: {str(e)}"
-        )
+        raise HTTPException(status_code=500, detail=f"Error loading rules: {str(e)}")
 
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: Union[str, None] = None):
@@ -145,10 +119,9 @@ def debug():
     """Debug endpoint - shows file locations"""
     base_dir = Path(__file__).parent
     rules_path = base_dir / "taoyuan_rules.json"
-    
     return {
         "base_dir": str(base_dir),
         "rules_path": str(rules_path),
         "rules_exists": rules_path.exists(),
-        "all_files": [f.name for f in base_dir.glob("*") if f.is_file()]
+        "all_files": [f.name for f in base_dir.glob("*") if f.is_file()],
     }
