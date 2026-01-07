@@ -39,6 +39,7 @@ class WasteDetector:
             # Recyclables
             "bottle": "recyclable",
             "wine glass": "recyclable",
+            "can": "recyclable",
             "cup": "recyclable",
             "fork": "recyclable",
             "knife": "recyclable",
