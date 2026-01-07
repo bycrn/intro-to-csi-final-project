@@ -9,9 +9,9 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
-  base: '/intro-to-csi-final-project/',
+  base: '/',  // Changed from '/intro-to-csi-final-project/'
   build: {
-    outDir: '../dist'
+    outDir: 'dist'  // Changed from '../dist'
   },
   server: {
     port: 5173,
