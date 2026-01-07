@@ -18,16 +18,14 @@ detector = WasteDetector()
 # ✅ CORS (Production-safe)
 # Add your deployed frontend(s) here:
 FRONTEND_ORIGINS = [
-    "https://wastesorting-nk7y.onrender.com",
+    "https://wastesorting-nk7y.onrender.com",  # ✅ Your actual frontend URL
     # Development origins - add these for local development
-    "http://localhost:3000",  # Common Vite dev server port
-    "http://localhost:5173",  # Default Vite dev server port
-    "http://localhost:8000",  # Your actual frontend port
+    "http://localhost:3000",
+    "http://localhost:5173", 
+    "http://localhost:8000",
     "http://127.0.0.1:3000",
     "http://127.0.0.1:5173",
-    "http://127.0.0.1:8000",  # Add this too for 127.0.0.1
-    # If you have other domains (Netlify/Vercel custom domain), add them too:
-    # "https://your-frontend-domain.com",
+    "http://127.0.0.1:8000",
 ]
 
 app.add_middleware(
